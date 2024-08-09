@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load rest_framework %}
+{% block title %}Создать пост{% endblock %}
+{% block content %}
+
+<div class="container">
+  <h1>Создание поста</h1>
+  <form action="{% url 'post-create' %}" method="post" class="post-form">
+    {% csrf_token %}
+    {% render_form serializer %}
+    <button type="submit" class="btn btn-primary">Создать пост</button>
+  </form>
+  <a class="btn btn-primary" href="{% url 'index' %}">Назад</a>
+</div>
+
+{% endblock %}

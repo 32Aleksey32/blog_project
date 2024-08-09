@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}{{ post.title }}{% endblock %}
+{% load rest_framework %}
+{% block content %}
+
+<div class="container">
+  <div class="post">
+    <h1>{{ post.title }}</h1>
+    <p>Автор: {{ post.author }}</p>
+    <p>Дата публикации: {{ post.pub_date|date:"d.m.Y H:i" }}</p>
+    <p class="post-text" style="margin-bottom: 3%">{{ post.text }}</p>
+  
+    <p>
+      <span class="likes-count">
+        <i class="fas fa-heart"></i> {{ post.likes }}
+      </span>
+     </p> 
+  
+      {% if not post.author == user %}
+      <div class="post-actions" >
+        <form method="post" action="{% url 'post-like' post.id %}">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ request.get_full_path }}">
+          <input type="hidden" name="next" value="{{ request.get_full_path }}">
+          <button type="submit" class="like-button"><i class="fas fa-thumbs-up"></i></button>
+        </form>
+        <form method="post" action="{% url 'post-dislike' post.id %}">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ request.get_full_path }}">
+          <button type="submit" class="dislike-button"><i class="fas fa-thumbs-down"></i></button>
+        </form>
+      </div>
+    {% else %}
+      <a href="{% url 'post-edit' post.id %}" class="btn btn-primary" >Изменить</a>
+      <form action="{% url 'post-delete' post.id %}" class="post-form">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Удалить</button>
+      </form>
+    {% endif %}
+    <form action="{% url 'index' %}" method="get" class="post-form">
+      <button type="submit" class="btn btn-primary">Вернуться на главную </button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

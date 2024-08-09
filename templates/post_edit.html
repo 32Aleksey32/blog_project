@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Редактировать {{ post.title }}{% endblock %}
+{% block content %}
+{% load rest_framework %}
+
+<div class="container">
+  <h1>Редактирование поста</h1>
+  <form action="{% url 'post-edit' post.id %}" method="post">
+    {% csrf_token %}
+    {% render_form serializer %}
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+  </form>
+</div>
+{% endblock %}
